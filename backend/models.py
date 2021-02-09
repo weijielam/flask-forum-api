@@ -7,7 +7,7 @@ import json
 database_name = "forum"
 database_path = "postgres://{}/{}".format('localhost:5432', database_name)
 
-db = SQLAlchemy
+db = SQLAlchemy()
 
 def setup_db(app, database_path=database_path):
     """binds a flask application and a SQLAlchemy service"""
@@ -50,6 +50,30 @@ class User(db.Model):
     def __repr__(self):
         return "<User {} {}/>".format(self.name, self.accessLevel)
 
+class Category(db.Model):
+    __tablename__ = "categories"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20), unique=True, nullable=False)
+    description = Column(String(100))
+
+    def __init__(self, post_id, user_id, body, created_timestamp):
+        self.name = name
+        self.description = description
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def __repr__(self):
+        return "<Category {} {}>".format(self.name, self.description)
 
 class Post(db.Model):
     __tablename__ = "posts"
@@ -112,27 +136,3 @@ class Comment(db.Model):
     def __repr__(self):
         return "<Comment {} {} {} {}>".format(self.post_id, self.user_id, self.body, self.created_timestamp)
 
-class Category(db.Model):
-    __tablename__ = "categories"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(20), unique=True, nullable=False)
-    description = Column(String(100))
-
-    def __init__(self, post_id, user_id, body, created_timestamp):
-        self.name = name
-        self.description = description
-
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.commit()
-
-    def __repr__(self):
-        return "<Category {} {}>".format(self.name, self.description)
