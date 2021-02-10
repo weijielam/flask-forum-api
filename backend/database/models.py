@@ -102,6 +102,23 @@ class Post(db.Model):
 
     def update(self):
         db.session.commit()
+    
+    def short(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "created_timestamp": self.created_timestamp
+        }
+
+    def long(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "body": self.body,
+            "created_timestamp": self.created_timestamp,
+            "user_id": self.user_id,
+            "category_id": self.category_id
+        }
 
     def __repr__(self):
         return "<Post {} {} {} {} {}>".format(self.title, self.body, self.created_timestamp, self.user_id, self.category_id)
