@@ -28,7 +28,6 @@ def create_app(test_config=None):
     def health():
         return jsonify({'health': 'Running!'}), 200
 
-    # Get all posts 
     @app.route('/posts')
     def get_posts():
         posts_query = Post.query.order_by(Post.id).all()
@@ -40,9 +39,10 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/posts', methods=['POST'])
-    def create_post():
+    # @requires_auth("post:posts")
+    def create_post(payload):
         try:
-            new_post = Post("title","body",str(datetime.now()), 1,1)
+            new_post = Post("title","body", 1,1)
             new_post.insert()
         except Exception as e:
             print(e)
@@ -51,9 +51,13 @@ def create_app(test_config=None):
                 "created_post_id": new_post.id
             }), 201
 
-    # Get all categories
+    @app.route('/posts', methods=['DELETE'])
+    # @requires_auth("delete:posts")
+    def delete_post():
+
+    # TODO: Categories methods
     @app.route('/categories')
-    def categories():
+    def get_categories():
         categories_query = Category.query.order_by(Category.id).all()
         categories = [category.short() for category in categories_query]
 
@@ -62,7 +66,23 @@ def create_app(test_config=None):
             "posts": categories
         }), 200
 
-    # Get all users (this will require auth permissions)
+    @app.route('/categories', methods=['POST'])
+    def create_category():
+        try:
+            new_category = Category("category name", "category description")
+            new_category.insert()
+        except Exception as e:
+            print(e)
+        return jsonify({
+            "success": True,
+            "created_category_id": new_post.id
+        })
+
+    @app.route('/categories', methods=['PATCH'])
+    def update_category():
+
+    # TODO: Users methods
+    # @requires_auth("get:users")
     @app.route('/users')
     def users():
         users_query = User.query.order_by(User.id).all()
