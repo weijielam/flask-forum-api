@@ -85,10 +85,10 @@ class Post(db.Model):
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     category_id = Column(Integer, ForeignKey(Category.id), nullable=False)
 
-    def __init__(self, title, body, created_timestamp, user_id, category_id):
+    def __init__(self, title, body, user_id, category_id):
         self.title = title
         self.body = body
-        self.created_timestamp = created_timestamp
+        self.created_timestamp = datetime.now()
         self.user_id = user_id
         self.category_id = category_id
     
@@ -149,6 +149,22 @@ class Comment(db.Model):
 
     def update(self):
         db.session.commit()
+    
+    def short(self):
+        return {
+            "id": self.id,
+            "body": self.body,
+            "created_timestamp": self.created_timestamp
+        }
+
+    def long(self):
+        return {
+            "id": self.id,
+            "post_id": self.post_id,
+            "user_id": self.user_id,
+            "body": self.body,
+            "created_timestamp": self.created_timestamp
+        }
 
     def __repr__(self):
         return "<Comment {} {} {} {}>".format(self.post_id, self.user_id, self.body, self.created_timestamp)
