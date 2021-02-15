@@ -25,31 +25,6 @@ def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
 
-class User(db.Model):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(25), unique=True, nullable=False)
-    accessLevel = Column(Integer, nullable=False)
-
-    def __init__(self, name, accessLevel):
-        self.name = name
-        self.accessLevel = accessLevel
-    
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.commit()
-
-    def __repr__(self):
-        return "<User {} {}/>".format(self.name, self.accessLevel)
-
 class Category(db.Model):
     __tablename__ = "categories"
 
@@ -57,7 +32,7 @@ class Category(db.Model):
     name = Column(String(20), unique=True, nullable=False)
     description = Column(String(100))
 
-    def __init__(self, post_id, user_id, body, created_timestamp):
+    def __init__(self, name, description):
         self.name = name
         self.description = description
 
@@ -72,6 +47,12 @@ class Category(db.Model):
     def update(self):
         db.session.commit()
 
+    def short(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+        }
+
     def __repr__(self):
         return "<Category {} {}>".format(self.name, self.description)
 
@@ -82,16 +63,14 @@ class Post(db.Model):
     title = Column(String(100), nullable=False)
     body = Column(String(1000))
     created_timestamp = Column(DateTime, nullable=False, default=datetime.now())
-    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     category_id = Column(Integer, ForeignKey(Category.id), nullable=False)
 
-    def __init__(self, title, body, user_id, category_id):
+    def __init__(self, title, body, category_id):
         self.title = title
         self.body = body
-        self.created_timestamp = datetime.now()
-        self.user_id = user_id
         self.category_id = category_id
-    
+        self.created_timestamp = datetime.now()
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -116,26 +95,23 @@ class Post(db.Model):
             "title": self.title,
             "body": self.body,
             "created_timestamp": self.created_timestamp,
-            "user_id": self.user_id,
+            # "user_id": self.user_id,
             "category_id": self.category_id
         }
 
     def __repr__(self):
         return "<Post {} {} {} {} {}>".format(self.title, self.body, self.created_timestamp, self.user_id, self.category_id)
         
-
 class Comment(db.Model):
     __tablename__ = "comments"
 
     id = Column(Integer, primary_key=True)
     post_id = Column(Integer, ForeignKey(Post.id), nullable=False)
-    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     body = Column(String(1000), nullable=False)
     created_timestamp = Column(DateTime, nullable=False, default=datetime.now())
 
-    def __init__(self, post_id, user_id, body, created_timestamp):
+    def __init__(self, post_id, body, created_timestamp):
         self.post_id = post_id
-        self.user_id = user_id
         self.body = body
         self.created_timestamp = created_timestamp
 
@@ -161,11 +137,10 @@ class Comment(db.Model):
         return {
             "id": self.id,
             "post_id": self.post_id,
-            "user_id": self.user_id,
             "body": self.body,
             "created_timestamp": self.created_timestamp
         }
 
     def __repr__(self):
-        return "<Comment {} {} {} {}>".format(self.post_id, self.user_id, self.body, self.created_timestamp)
+        return "<Comment {} {} {} {}>".format(self.post_id, self.body, self.created_timestamp)
 
