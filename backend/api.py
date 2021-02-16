@@ -12,6 +12,7 @@ def create_app(test_config=None):
     setup_db(app)
     # CORS(app)
 
+    # this needs to be run once to create the database 
     # db_drop_and_create_all()
 
     CORS(app, resources={r"/*": {"origins": "*"}})
@@ -28,8 +29,6 @@ def create_app(test_config=None):
     def health():
         return jsonify({'health': 'Running!'}), 200
 
-
-    # POSTS
     @app.route('/posts')
     def get_posts():
         posts_query = Post.query.order_by(Post.id).all()
@@ -41,28 +40,28 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/posts', methods=['POST'])
-    def create_post(payload):
+    def create_post():
         try:
             data = request.get_json()
-            
-            post = Post()
-            post.title = data['title']
-            post.body = data['body']
-            post.user_id = data['user_id']
-            post.category_id = data['category_id']
 
+            title = data['title']
+            body = data['body']
+            category = data['category_id']
+
+            post = Post(title, body, category)
             post.insert()
 
         except Exception as e:
+            print(e)
             abort(400)
 
         return jsonify({
-                "success": True,
-                "created_post_id": new_post.id
-            }), 200
+            "success": True,
+            "created_post_id": post.id
+        }), 200
 
     @app.route('/posts/<int:id>', methods=['DELETE'])
-    def delete_post(payload, id):
+    def delete_post(id):
         post = Post.query.filter_by(id=id).one_or_none()
         if post is None:
             abort(404)
@@ -72,8 +71,6 @@ def create_app(test_config=None):
             abort(400)
         return jsonify({'success': True, 'delete': id}), 200
 
-
-    # CATEGORIES
     @app.route('/categories')
     def get_categories():
         categories_query = Category.query.order_by(Category.id).all()
@@ -81,21 +78,22 @@ def create_app(test_config=None):
 
         return jsonify({
             "success": True,
-            "posts": categories
+            "categories": categories
         }), 200
 
     @app.route('/categories', methods=['POST'])
-    def create_category(payload):
+    def create_category():
         try:
             data = request.get_json()
 
-            category = Category()
+            category = Category('a', 'b')
             category.name = data['name']
             category.description = data['description']
-            
+
             category.insert()
 
         except Exception as e:
+            print(e)
             abort(400)
 
         return jsonify({
@@ -104,17 +102,17 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/categories/<int:id>', methods=['PATCH'])
-    def update_category(payload, id):
+    def update_category(id):
         try:
             data = request.get_json()
             category = Category.query.filter_by(id=id).one_or_none()
 
             if (category is None):
                 abort(404)
-            
+
             category.description = data['description']
             category.update()
-        
+
         except Exception as e:
             abort(400)
 
@@ -123,18 +121,35 @@ def create_app(test_config=None):
             'categories': [category.long()]
         }), 200
 
-
-    # USERS
-    @app.route('/users')
-    def users():
-        users_query = User.query.order_by(User.id).all()
-        users = [user.short() for user in users_query]
+    @app.route('/posts/<int:id>', methods=['GET'])
+    def get_comments_from_post(id):
+        comments_query = Comment.query.order_by(post_id=id)
+        comments = [comment.long() for comment in comments_query]
 
         return jsonify({
             "success": True,
-            "posts": users
-        }), 200
+            "comments": comments
+        })
 
+    @app.route('/posts/<int:id>', methods=['POST'])
+    def create_comment_on_post(id):
+        try:
+            data = request.get_json()
+            post_id = id
+            body = data['body']
+
+            comment = Comment(post_id, body)
+            comment.insert()
+        
+        except Exception as e:
+            print(e)
+            abort(400)
+        
+        return jsonify({
+            "success": True,
+            "post_id": comment.post_id
+            "created_comment_id": comment.id
+        })
 
     return app
 
