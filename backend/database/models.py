@@ -110,10 +110,10 @@ class Comment(db.Model):
     body = Column(String(1000), nullable=False)
     created_timestamp = Column(DateTime, nullable=False, default=datetime.now())
 
-    def __init__(self, post_id, body, created_timestamp):
+    def __init__(self, post_id, body):
         self.post_id = post_id
         self.body = body
-        self.created_timestamp = created_timestamp
+        self.created_timestamp = datetime.now()
 
     def insert(self):
         db.session.add(self)
