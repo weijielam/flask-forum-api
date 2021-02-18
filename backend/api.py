@@ -3,7 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
-from database.models import db_drop_and_create_all, setup_db, Post, Category, User, Comment
+from database.models import db_drop_and_create_all, setup_db, Post, Category, Comment
 # from auth.auth import AuthError, requires_auth
 
 def create_app(test_config=None):
@@ -147,7 +147,7 @@ def create_app(test_config=None):
         
         return jsonify({
             "success": True,
-            "post_id": comment.post_id
+            "post_id": comment.post_id,
             "created_comment_id": comment.id
         })
 
