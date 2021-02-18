@@ -4,7 +4,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 
 from api import create_app
-from database.models import Post, Comment, Category
+from database.models import setup_db, Post, Comment, Category
 
 class ForumTestCase(unittest.TestCase):
 
@@ -65,3 +65,14 @@ class ForumTestCase(unittest.TestCase):
         pass
 
 
+    def test_health(self):
+        response = self.client().get('/')
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('health', data)
+        self.assertEqual(data['health'], 'Running!')
+
+# Make the tests conveniently executable
+if __name__ == "__main__":
+    unittest.main()
