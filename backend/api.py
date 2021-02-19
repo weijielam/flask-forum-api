@@ -13,7 +13,7 @@ def create_app(test_config=None):
     # CORS(app)
 
     # this needs to be run once to create the database 
-    # db_drop_and_create_all()
+    db_drop_and_create_all()
 
     CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -150,6 +150,23 @@ def create_app(test_config=None):
             "post_id": comment.post_id,
             "created_comment_id": comment.id
         })
+
+    @app.errorhandler(400)
+    @app.errorhandler(401)
+    @app.errorhandler(403)
+    @app.errorhandler(404)
+    @app.errorhandler(405)
+    @app.errorhandler(422)
+    @app.errorhandler(500)
+    def error_handler(error):
+        return jsonify({
+            'success': False,
+            'error': error.code,
+            'message': error.description
+        }), error.code
+
+    return app
+
 
     return app
 

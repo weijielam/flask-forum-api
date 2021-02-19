@@ -52,6 +52,13 @@ class Category(db.Model):
             "id": self.id,
             "name": self.name,
         }
+    
+    def long(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description
+        }
 
     def __repr__(self):
         return "<Category {} {}>".format(self.name, self.description)

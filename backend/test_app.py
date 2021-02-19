@@ -4,7 +4,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 
 from api import create_app
-from database.models import setup_db, Post, Comment, Category
+from database.models import setup_db, db_drop_and_create_all, Post, Comment, Category
 
 class ForumTestCase(unittest.TestCase):
 
@@ -52,6 +52,7 @@ class ForumTestCase(unittest.TestCase):
         }
 
         setup_db(self.app, self.database_path)
+        db_drop_and_create_all()
 
         # binds the app to the current context
         with self.app.app_context():
@@ -72,6 +73,50 @@ class ForumTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('health', data)
         self.assertEqual(data['health'], 'Running!')
+
+    def test_get_categories(self):
+        response = self.client().get('/categories')
+        data = json.loads(response.data)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(data))
+        self.assertTrue(data["success"])
+        self.assertIn('categories', data)
+        self.assertTrue(len(data["categories"]) == 0) # no categories are inserted yet
+
+    def test_get_posts(self):
+        response = self.client().get('/posts')
+        data = json.loads(response.data)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(data))
+        self.assertTrue(data["success"])
+        self.assertIn('posts', data)
+        self.assertTrue(len(data["posts"]) == 0) # no posts are inserted yet
+        
+    def test_create_category(self):
+        response = self.client().post('/categories', json=self.VALID_NEW_CATEGORY)
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data["success"])
+        self.assertIn('created_category_id', data)
+
+    def test_create_category_400(self):
+        response = self.client().post('/categories', json=self.INVALID_NEW_CATEGORY)
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(data["success"])
+        self.assertIn('message', data)
+
+    def test_update_category(self):
+        response = self.client().patch('/categories/1', json=self.VALID_UPDATE_CATEGORY)
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data["success"])
+        self.assertIn('categories', data)
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
