@@ -4,7 +4,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 
 from api import create_app
-from database.models import setup_db, db_drop_and_create_all, Post, Comment, Category
+from database.models import setup_db, Post, Comment, Category
 
 class ForumTestCase(unittest.TestCase):
 
@@ -51,8 +51,8 @@ class ForumTestCase(unittest.TestCase):
             "body": "This Comment is invalid"
         }
 
-        setup_db(self.app, self.database_path)
-        db_drop_and_create_all()
+        # setup_db(self.app, self.database_path)
+        # db_drop_and_create_all()
 
         # binds the app to the current context
         with self.app.app_context():
@@ -65,6 +65,7 @@ class ForumTestCase(unittest.TestCase):
         """Executed after reach test"""
         pass
 
+    # TODO: FIGURE OUT HOW TO DROP/CREATE DB ON EACH TEST RUN
 
     def test_health(self):
         response = self.client().get('/')
@@ -82,7 +83,7 @@ class ForumTestCase(unittest.TestCase):
         self.assertTrue(len(data))
         self.assertTrue(data["success"])
         self.assertIn('categories', data)
-        self.assertTrue(len(data["categories"]) == 0) # no categories are inserted yet
+        self.assertTrue(len(data["categories"])) 
 
     def test_get_posts(self):
         response = self.client().get('/posts')
@@ -92,7 +93,7 @@ class ForumTestCase(unittest.TestCase):
         self.assertTrue(len(data))
         self.assertTrue(data["success"])
         self.assertIn('posts', data)
-        self.assertTrue(len(data["posts"]) == 0) # no posts are inserted yet
+        self.assertTrue(len(data["posts"])) 
         
     def test_create_category(self):
         response = self.client().post('/categories', json=self.VALID_NEW_CATEGORY)
@@ -116,7 +117,18 @@ class ForumTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data["success"])
-        self.assertIn('categories', data)
+        self.assertIn('category', data)
+        self.assertEqual(data["category"]["description"], self.VALID_UPDATE_CATEGORY["description"]) # this is now fixed
+
+    def test_create_post(self):
+        response = self.client().post('/posts', json=self.VALID_NEW_POST)
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data["success"])
+        self.assertIn('created_post_id', data)
+
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

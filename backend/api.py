@@ -13,7 +13,7 @@ def create_app(test_config=None):
     # CORS(app)
 
     # this needs to be run once to create the database 
-    db_drop_and_create_all()
+    # db_drop_and_create_all()
 
     CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -114,11 +114,12 @@ def create_app(test_config=None):
             category.update()
 
         except Exception as e:
+            print(e)
             abort(400)
 
         return jsonify({
-            'success': True,
-            'categories': [category.long()]
+            "success": True,
+            "category": category.long()
         }), 200
 
     @app.route('/posts/<int:id>', methods=['GET'])
