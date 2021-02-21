@@ -110,6 +110,7 @@ def create_app(test_config=None):
             if (category is None):
                 abort(404)
 
+            data['description']
             category.description = data['description']
             category.update()
 
