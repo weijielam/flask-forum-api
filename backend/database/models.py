@@ -4,8 +4,14 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import json
 
-database_name = "forum"
-database_path = "postgres://{}/{}".format('localhost:5432', database_name)
+# database_name = "forum"
+
+database_path = os.environ.get('DATABASE_URL')
+if not database_path:
+    database_name = "forum"
+    database_path = "postgres://{}/{}".format('localhost:5432', database_name)
+
+# database_path = "postgres://{}/{}".format('localhost:5432', database_name)
 
 db = SQLAlchemy()
 
@@ -69,7 +75,7 @@ class Post(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(String(100), nullable=False)
     body = Column(String(1000))
-    created_timestamp = Column(DateTime, nullable=False, default=datetime.now())
+    created_timestamp = Column(DateTime, default=datetime.now())
     category_id = Column(Integer, ForeignKey(Category.id), nullable=False)
 
     def __init__(self, title, body, category_id):
@@ -102,20 +108,21 @@ class Post(db.Model):
             "title": self.title,
             "body": self.body,
             "created_timestamp": self.created_timestamp,
-            # "user_id": self.user_id,
             "category_id": self.category_id
         }
 
     def __repr__(self):
-        return "<Post {} {} {} {} {}>".format(self.title, self.body, self.created_timestamp, self.user_id, self.category_id)
+        return "<Post {} {} {} {}>".format(self.title, self.body, self.created_timestamp, self.category_id)
         
 class Comment(db.Model):
     __tablename__ = "comments"
 
     id = Column(Integer, primary_key=True)
-    post_id = Column(Integer, ForeignKey(Post.id), nullable=False)
     body = Column(String(1000), nullable=False)
-    created_timestamp = Column(DateTime, nullable=False, default=datetime.now())
+    created_timestamp = Column(DateTime, default=datetime.now())
+    post_id = Column(Integer, ForeignKey(Post.id), nullable=False)
+
+    post = db.relationship(Post, backref=db.backref("posts", cascade="save-update, merge, delete"))
 
     def __init__(self, post_id, body):
         self.post_id = post_id
@@ -149,5 +156,5 @@ class Comment(db.Model):
         }
 
     def __repr__(self):
-        return "<Comment {} {} {} {}>".format(self.post_id, self.body, self.created_timestamp)
+        return "<Comment {} {} {}>".format(self.post_id, self.body, self.created_timestamp)
 

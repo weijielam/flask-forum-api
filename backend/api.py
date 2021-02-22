@@ -29,6 +29,53 @@ def create_app(test_config=None):
     def health():
         return jsonify({'health': 'Running!'}), 200
 
+    @app.route('/categories')
+    def get_categories():
+        categories_query = Category.query.order_by(Category.id).all()
+        categories = [category.short() for category in categories_query]
+
+        return jsonify({
+            "success": True,
+            "categories": categories
+        }), 200
+
+    @app.route('/categories', methods=['POST'])
+    def create_category():
+        try:
+            data = request.get_json()
+
+            category = Category(data['name'], data['description'])
+            category.insert()
+
+        except Exception as e:
+            abort(400)
+
+        return jsonify({
+            "success": True,
+            "created_category_id": category.id
+        }), 200
+
+    @app.route('/categories/<int:id>', methods=['PATCH'])
+    def update_category(id):
+        try:
+            data = request.get_json()
+            category = Category.query.filter_by(id=id).one_or_none()
+
+            if (category is None):
+                abort(404)
+
+            data['description']
+            category.description = data['description']
+            category.update()
+
+        except Exception as e:
+            abort(400)
+
+        return jsonify({
+            "success": True,
+            "category": category.long()
+        }), 200
+
     @app.route('/posts')
     def get_posts():
         posts_query = Post.query.order_by(Post.id).all()
@@ -43,12 +90,8 @@ def create_app(test_config=None):
     def create_post():
         try:
             data = request.get_json()
-
-            title = data['title']
-            body = data['body']
-            category = data['category_id']
-
-            post = Post(title, body, category)
+            
+            post = Post(data['title'], data['body'], data['category_id'])
             post.insert()
 
         except Exception as e:
@@ -71,58 +114,6 @@ def create_app(test_config=None):
             abort(400)
         return jsonify({'success': True, 'delete': id}), 200
 
-    @app.route('/categories')
-    def get_categories():
-        categories_query = Category.query.order_by(Category.id).all()
-        categories = [category.short() for category in categories_query]
-
-        return jsonify({
-            "success": True,
-            "categories": categories
-        }), 200
-
-    @app.route('/categories', methods=['POST'])
-    def create_category():
-        try:
-            data = request.get_json()
-
-            category = Category('a', 'b')
-            category.name = data['name']
-            category.description = data['description']
-
-            category.insert()
-
-        except Exception as e:
-            print(e)
-            abort(400)
-
-        return jsonify({
-            "success": True,
-            "created_category_id": category.id
-        }), 200
-
-    @app.route('/categories/<int:id>', methods=['PATCH'])
-    def update_category(id):
-        try:
-            data = request.get_json()
-            category = Category.query.filter_by(id=id).one_or_none()
-
-            if (category is None):
-                abort(404)
-
-            data['description']
-            category.description = data['description']
-            category.update()
-
-        except Exception as e:
-            print(e)
-            abort(400)
-
-        return jsonify({
-            "success": True,
-            "category": category.long()
-        }), 200
-
     @app.route('/posts/<int:id>', methods=['GET'])
     def get_comments_from_post(id):
         comments_query = Comment.query.order_by(post_id=id)
@@ -140,11 +131,15 @@ def create_app(test_config=None):
             post_id = id
             body = data['body']
 
-            comment = Comment(post_id, body)
+            posts_made = Post.query.all()
+            print("POSTS" , posts_made) 
+            comment = Comment(id, data['body'])
             comment.insert()
+
+            print(comment)
         
         except Exception as e:
-            print(e)
+            print("EXCEPTION: ", e)
             abort(400)
         
         return jsonify({
