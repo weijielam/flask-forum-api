@@ -1,6 +1,7 @@
 import os
 import unittest
 import json
+import time
 from flask_sqlalchemy import SQLAlchemy
 
 from api import create_app
@@ -15,7 +16,7 @@ class ForumTestCase(unittest.TestCase):
         self.database_name = "forum_test"
         self.database_path = "postgres://{}/{}".format('localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
-        
+    
         self.VALID_NEW_CATEGORY = {
             "name": "Valid Test Category",
             "description": "This is a Test Category description."
@@ -86,12 +87,12 @@ class ForumTestCase(unittest.TestCase):
     def test_get_posts(self):
         response = self.client().get('/posts')
         data = json.loads(response.data)
-        
+
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(data))
         self.assertTrue(data["success"])
         self.assertIn('posts', data) 
-        
+    
     def test_create_category(self):
         response = self.client().post('/categories', json=self.VALID_NEW_CATEGORY)
         data = json.loads(response.data)
@@ -132,7 +133,6 @@ class ForumTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data["success"])
         self.assertIn('created_post_id', data)
-        
 
     def test_create_post_400(self):
         response = self.client().post('/posts', json=self.INVALID_NEW_POST)
@@ -144,20 +144,24 @@ class ForumTestCase(unittest.TestCase):
 
     # TODO: THIS NEEDS TO BE FIXED
     def test_create_comment(self):
-        response = self.client().post('/posts/1', json=self.VALID_NEW_COMMENT)
+        response = self.client().post('/comments', json=self.VALID_NEW_COMMENT)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data["success"])
         self.assertIn('created_comment_id', data)
 
-    def test_create_comment_400(self):
-        response = self.client().post('/posts/1', json=self.INVALID_NEW_COMMENT)
-        data = json.loads(response.data)
+    # def test_create_comment_400(self):
+    #     response = self.client().post('/comments', json=self.INVALID_NEW_COMMENT)
+    #     data = json.loads(response.data)
 
-        self.assertEqual(response.status_code, 400)
-        self.assertFalse(data["success"])
-        self.assertIn('message', data)
+    #     self.assertEqual(response.status_code, 400)
+    #     self.assertFalse(data["success"])
+    #     self.assertIn('message', data)
+
+    # def test_get_post_from_categories(self):
+    #     response = self.client().get('/categories/1')
+    #     data = json.loads(response.data)
 
     # def test_delete_post(self):
     #     response = self.client().delete('/posts/1')
@@ -175,6 +179,7 @@ class ForumTestCase(unittest.TestCase):
     #     self.assertFalse(data["success"])
     #     self.assertIn('message', data)
 
+    # TODO: RBAC TESTS
 
 
 # Make the tests conveniently executable

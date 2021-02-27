@@ -43,8 +43,10 @@ def create_app(test_config=None):
     def create_category():
         try:
             data = request.get_json()
-
-            category = Category(data['name'], data['description'])
+            name = data['name']
+            description = data['description']
+            
+            category = Category(name, description)
             category.insert()
 
         except Exception as e:
@@ -64,8 +66,8 @@ def create_app(test_config=None):
             if (category is None):
                 abort(404)
 
-            data['description']
-            category.description = data['description']
+            description = data['description']
+            category.description = description
             category.update()
 
         except Exception as e:
@@ -86,12 +88,27 @@ def create_app(test_config=None):
             "posts": posts
         }), 200
 
+    @app.route('/categories/<int:id>', methods=['GET'])
+    def get_posts_from_category_id(id):
+        posts_query = Post.query.join(Category).filter(Post.category_id == id).all()
+        posts = [post.short() for post in posts_query]
+
+        return jsonify({
+            "success": True,
+            "posts": posts
+        })
+
+
     @app.route('/posts', methods=['POST'])
     def create_post():
         try:
             data = request.get_json()
-            
-            post = Post(data['title'], data['body'], data['category_id'])
+
+            title = data['title']
+            body = data['body']
+            category_id = data['category_id']
+
+            post = Post(title, body, category_id)
             post.insert()
 
         except Exception as e:
@@ -124,28 +141,47 @@ def create_app(test_config=None):
             "comments": comments
         })
 
-    @app.route('/posts/<int:id>', methods=['POST'])
-    def create_comment_on_post(id):
+    @app.route('/comments', methods=['POST'])
+    def create_comment_on_post():
         try:
             data = request.get_json()
-            post_id = id
+            post_id = data['post_id']
             body = data['body']
-
-            posts_made = Post.query.all()
-            print("POSTS" , posts_made) 
-            comment = Comment(id, data['body'])
+            comment = Comment(post_id, body)
             comment.insert()
 
-            print(comment)
-        
         except Exception as e:
-            print("EXCEPTION: ", e)
+            print(e)
             abort(400)
-        
+
         return jsonify({
             "success": True,
             "post_id": comment.post_id,
             "created_comment_id": comment.id
+        })
+
+    @app.route('/comments', methods=['DELETE'])
+    def delete_comment_on_post():
+        try:
+            data = request.get_json()
+            comment_id = data['comment_id']
+            comment = Comment.query.filter_by(id=comment_id).one_or_none()
+            id = comment.id
+
+            if comment is None:
+                abort(404)
+            try:
+                comment.delete()
+            except Exception as e:
+                abort(400)
+            return jsonify({'success': True, 'delete': id}), 200
+
+        except:
+            abort(400)
+
+        return jsonify({
+            "success": True,
+            "deleted": 0
         })
 
     @app.errorhandler(400)
@@ -161,9 +197,6 @@ def create_app(test_config=None):
             'error': error.code,
             'message': error.description
         }), error.code
-
-    return app
-
 
     return app
 

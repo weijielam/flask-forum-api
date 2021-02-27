@@ -112,7 +112,7 @@ class Post(db.Model):
         }
 
     def __repr__(self):
-        return "<Post {} {} {} {}>".format(self.title, self.body, self.created_timestamp, self.category_id)
+        return "<Post {} {} {} {} {}>".format(self.id, self.title, self.body, self.created_timestamp, self.category_id)
         
 class Comment(db.Model):
     __tablename__ = "comments"
@@ -122,7 +122,7 @@ class Comment(db.Model):
     created_timestamp = Column(DateTime, default=datetime.now())
     post_id = Column(Integer, ForeignKey(Post.id), nullable=False)
 
-    post = db.relationship(Post, backref=db.backref("posts", cascade="save-update, merge, delete"))
+    # post = db.relationship(Post, backref=db.backref("posts", cascade="save-update, merge, delete"))
 
     def __init__(self, post_id, body):
         self.post_id = post_id
