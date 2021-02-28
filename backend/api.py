@@ -112,7 +112,6 @@ def create_app(test_config=None):
             post.insert()
 
         except Exception as e:
-            print(e)
             abort(400)
 
         return jsonify({
@@ -151,7 +150,6 @@ def create_app(test_config=None):
             comment.insert()
 
         except Exception as e:
-            print(e)
             abort(400)
 
         return jsonify({

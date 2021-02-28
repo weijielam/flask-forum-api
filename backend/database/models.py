@@ -122,7 +122,7 @@ class Comment(db.Model):
     created_timestamp = Column(DateTime, default=datetime.now())
     post_id = Column(Integer, ForeignKey(Post.id), nullable=False)
 
-    # post = db.relationship(Post, backref=db.backref("posts", cascade="save-update, merge, delete"))
+    post = db.relationship(Post, backref=db.backref("posts", cascade="save-update, merge, delete"))
 
     def __init__(self, post_id, body):
         self.post_id = post_id
