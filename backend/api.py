@@ -88,13 +88,28 @@ def create_app(test_config=None):
             "posts": posts
         }), 200
 
-    @app.route('/categories/<int:id>', methods=['GET'])
-    def get_posts_from_category_id(id):
-        posts_query = Post.query.join(Category).filter(Post.category_id == id).all()
-        posts = [post.short() for post in posts_query]
+    @app.route('/posts/<int:id>', methods=['GET'])
+    def get_post_by_id(id):
+        post = Post.query.get(id)
+        comments_query = Comment.query.order_by(Comment.post_id==id)
+        comments = [comment.long() for comment in comments_query]
 
         return jsonify({
             "success": True,
+            "post": [post.long()],
+            "comments": comments
+        })
+
+    @app.route('/categories/<int:id>', methods=['GET'])
+    def get_posts_from_category_id(id):
+        category_query = Category.query.get(id)
+        category = category_query.long()
+        posts_query = Post.query.join(Category).filter(Post.category_id == id).all()
+        posts = [post.short() for post in posts_query]
+        
+        return jsonify({
+            "success": True,
+            "category": category,
             "posts": posts
         })
 
@@ -130,7 +145,6 @@ def create_app(test_config=None):
             abort(400)
         return jsonify({'success': True, 'delete': id}), 200
 
-    @app.route('/posts/<int:id>', methods=['GET'])
     def get_comments_from_post(id):
         comments_query = Comment.query.order_by(post_id=id)
         comments = [comment.long() for comment in comments_query]

@@ -147,11 +147,25 @@ class ForumTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(data))
         self.assertTrue(data["success"])
-        self.assertIn('posts', data) 
+        self.assertIn('posts', data)
 
     def test_b_03_get_post_from_categories(self):
         response = self.client().get('/categories/1')
         data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(data))
+        self.assertTrue(data["success"])
+        self.assertIn('category', data)
+        self.assertIn('posts', data)
+
+    def test_b_03_get_post_from_id(self):
+        response = self.client().get('/posts/1')
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(data))
+        self.assertTrue(data["success"])
 
     def test_c_01_update_category(self):
         response = self.client().patch('/categories/1', json=self.VALID_UPDATE_CATEGORY)
