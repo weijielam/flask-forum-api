@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
 from database.models import db_drop_and_create_all, setup_db, Post, Category, Comment
-# from auth.auth import AuthError, requires_auth
+from auth.auth import AuthError, requires_auth
 
 def create_app(test_config=None):
     # create and configure the app
@@ -30,9 +30,13 @@ def create_app(test_config=None):
         return jsonify({'health': 'Running!'}), 200
 
     @app.route('/categories')
-    def get_categories():
-        categories_query = Category.query.order_by(Category.id).all()
-        categories = [category.short() for category in categories_query]
+    @requires_auth("get:categories")
+    def get_categories(payload):
+        try:
+            categories_query = Category.query.order_by(Category.id).all()
+            categories = [category.short() for category in categories_query]
+        except:
+            abort(422)
 
         return jsonify({
             "success": True,
@@ -40,7 +44,8 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/categories', methods=['POST'])
-    def create_category():
+    @requires_auth("post:categories")
+    def create_category(payload):
         try:
             data = request.get_json()
             name = data['name']
@@ -49,8 +54,8 @@ def create_app(test_config=None):
             category = Category(name, description)
             category.insert()
 
-        except Exception as e:
-            abort(400)
+        except:
+            abort(422)
 
         return jsonify({
             "success": True,
@@ -58,7 +63,8 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/categories/<int:id>', methods=['PATCH'])
-    def update_category(id):
+    @requires_auth("patch:categories")
+    def update_category(payload, id):
         try:
             data = request.get_json()
             category = Category.query.filter_by(id=id).one_or_none()
@@ -70,8 +76,8 @@ def create_app(test_config=None):
             category.description = description
             category.update()
 
-        except Exception as e:
-            abort(400)
+        except:
+            abort(422)
 
         return jsonify({
             "success": True,
@@ -79,9 +85,13 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/posts')
-    def get_posts():
-        posts_query = Post.query.order_by(Post.id).all()
-        posts = [post.short() for post in posts_query]
+    @requires_auth("get:posts")
+    def get_posts(payload):
+        try:
+            posts_query = Post.query.order_by(Post.id).all()
+            posts = [post.short() for post in posts_query]
+        except:
+            abort(422)
 
         return jsonify({
             "success": True,
@@ -89,10 +99,14 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/posts/<int:id>', methods=['GET'])
-    def get_post_by_id(id):
-        post = Post.query.get(id)
-        comments_query = Comment.query.order_by(Comment.post_id==id)
-        comments = [comment.long() for comment in comments_query]
+    @requires_auth("get:posts")
+    def get_post_by_id(payload, id):
+        try:
+            post = Post.query.get(id)
+            comments_query = Comment.query.order_by(Comment.post_id==id)
+            comments = [comment.long() for comment in comments_query]
+        except:
+            abort(422)
 
         return jsonify({
             "success": True,
@@ -101,21 +115,25 @@ def create_app(test_config=None):
         })
 
     @app.route('/categories/<int:id>', methods=['GET'])
-    def get_posts_from_category_id(id):
-        category_query = Category.query.get(id)
-        category = category_query.long()
-        posts_query = Post.query.join(Category).filter(Post.category_id == id).all()
-        posts = [post.short() for post in posts_query]
-        
+    @requires_auth("get:posts")
+    def get_posts_from_category_id(payload, id):
+        try:
+            category_query = Category.query.get(id)
+            category = category_query.long()
+            posts_query = Post.query.join(Category).filter(Post.category_id == id).all()
+            posts = [post.short() for post in posts_query]
+        except:
+            abort(422)
+
         return jsonify({
             "success": True,
             "category": category,
             "posts": posts
         })
 
-
     @app.route('/posts', methods=['POST'])
-    def create_post():
+    @requires_auth("post:posts")
+    def create_post(payload):
         try:
             data = request.get_json()
 
@@ -126,8 +144,8 @@ def create_app(test_config=None):
             post = Post(title, body, category_id)
             post.insert()
 
-        except Exception as e:
-            abort(400)
+        except:
+            abort(422)
 
         return jsonify({
             "success": True,
@@ -135,27 +153,20 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/posts/<int:id>', methods=['DELETE'])
-    def delete_post(id):
+    @requires_auth("delete:posts")
+    def delete_post(payload, id):
         post = Post.query.filter_by(id=id).one_or_none()
         if post is None:
             abort(404)
         try:
             post.delete()
-        except Exception as e:
-            abort(400)
+        except:
+            abort(422)
         return jsonify({'success': True, 'delete': id}), 200
 
-    def get_comments_from_post(id):
-        comments_query = Comment.query.order_by(post_id=id)
-        comments = [comment.long() for comment in comments_query]
-
-        return jsonify({
-            "success": True,
-            "comments": comments
-        })
-
     @app.route('/comments', methods=['POST'])
-    def create_comment_on_post():
+    @requires_auth("post:comments")
+    def create_comment_on_post(payload):
         try:
             data = request.get_json()
             post_id = data['post_id']
@@ -163,8 +174,8 @@ def create_app(test_config=None):
             comment = Comment(post_id, body)
             comment.insert()
 
-        except Exception as e:
-            abort(400)
+        except:
+            abort(422)
 
         return jsonify({
             "success": True,
@@ -173,7 +184,8 @@ def create_app(test_config=None):
         })
 
     @app.route('/comments', methods=['DELETE'])
-    def delete_comment_on_post():
+    @requires_auth("delete:comments")
+    def delete_comment_on_post(payload):
         try:
             data = request.get_json()
             comment_id = data['comment_id']
@@ -184,8 +196,8 @@ def create_app(test_config=None):
                 abort(404)
             try:
                 comment.delete()
-            except Exception as e:
-                abort(400)
+            except:
+                abort(422)
             return jsonify({'success': True, 'delete': id}), 200
 
         except:
@@ -193,7 +205,7 @@ def create_app(test_config=None):
 
         return jsonify({
             "success": True,
-            "deleted": 0
+            "deleted": id
         })
 
     @app.errorhandler(400)
@@ -209,6 +221,15 @@ def create_app(test_config=None):
             'error': error.code,
             'message': error.description
         }), error.code
+
+    @app.errorhandler(AuthError)
+    def handle_auth_error(ex):
+        """
+        Receive the raised authorization error and propagates it as response
+        """
+        response = jsonify(ex.error)
+        response.status_code = ex.status_code
+        return response
 
     return app
 

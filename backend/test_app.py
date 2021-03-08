@@ -8,6 +8,9 @@ from database.models import setup_db, db_drop_and_create_all, Post, Comment, Cat
 
 # PYTHON UNIT TESTS ARE RAN IN ALPHABETICAL ORDER! 
 
+# Disabling Auth0 calls when testing core functionality
+os.environ["DISABLE_AUTH0"] = "1"
+
 class ForumTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -56,6 +59,10 @@ class ForumTestCase(unittest.TestCase):
             "body": "This Comment is invalid"
         }
 
+        self.VALID_DELETE_COMMENT = {
+            "comment_id": 1
+        }
+
         # binds the app to the current context
         with self.app.app_context():
             self.db = SQLAlchemy()
@@ -68,12 +75,14 @@ class ForumTestCase(unittest.TestCase):
         """Executed after reach test"""
         pass
     
-    # NOTE: unittest by default is ran in alphabetical order
-    # To get around an issue with test failing due to dependencies
-    # on previous test, the tests have alphanumeric prefix which 
-    # allows them to be ran in a specific order.
-    # See: https://stackoverflow.com/questions/5387299/python-unittest-testcase-execution-order/5387956#5387956
-
+    """
+    NOTE: unittest by default is ran in alphabetical order
+    To get around an issue with test failing due to dependencies
+    on previous test, the tests have alphanumeric prefix which 
+    allows them to be ran in a specific order. At a later point 
+    I may change the tests to work independently of each other.
+    See: https://stackoverflow.com/questions/5387299/python-unittest-testcase-execution-order/5387956#5387956
+    """
     def test_a_01_health(self):
         response = self.client().get('/')
         data = json.loads(response.data)
@@ -90,11 +99,11 @@ class ForumTestCase(unittest.TestCase):
         self.assertTrue(data["success"])
         self.assertIn('created_category_id', data)
 
-    def test_a_03_create_category_400(self):
+    def test_a_03_create_category_422(self):
         response = self.client().post('/categories', json=self.INVALID_NEW_CATEGORY)
         data = json.loads(response.data)
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 422)
         self.assertFalse(data["success"])
         self.assertIn('message', data)
 
@@ -106,11 +115,11 @@ class ForumTestCase(unittest.TestCase):
         self.assertTrue(data["success"])
         self.assertIn('created_post_id', data)
 
-    def test_a_05_create_post_400(self):
+    def test_a_05_create_post_422(self):
         response = self.client().post('/posts', json=self.INVALID_NEW_POST)
         data = json.loads(response.data)
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 422)
         self.assertFalse(data["success"])
         self.assertIn('message', data)
 
@@ -122,11 +131,11 @@ class ForumTestCase(unittest.TestCase):
         self.assertTrue(data["success"])
         self.assertIn('created_comment_id', data)
 
-    def test_a_07_create_comment_400(self):
+    def test_a_07_create_comment_422(self):
         response = self.client().post('/comments', json=self.INVALID_NEW_COMMENT)
         data = json.loads(response.data)
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 422)
         self.assertFalse(data["success"])
         self.assertIn('message', data)
 
@@ -180,12 +189,17 @@ class ForumTestCase(unittest.TestCase):
         response = self.client().patch('/categories/100', json=self.INVALID_UPDATE_CATEGORY)
         data = json.loads(response.data)
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 422)
         self.assertFalse(data["success"])
         self.assertIn('message', data)
     
     def test_d_01_delete_comment_on_post(self):
-        response = self.client().delete('/')
+        response = self.client().delete('/comments', json=self.VALID_DELETE_COMMENT)
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data["success"])
+        self.assertIn('delete', data)
 
     def test_d_02_delete_post(self):
         response = self.client().delete('/posts/1')
@@ -202,9 +216,6 @@ class ForumTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertFalse(data["success"])
         self.assertIn('message', data)
-
-
-    # TODO: RBAC TESTS
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
