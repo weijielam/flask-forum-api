@@ -1,0 +1,1477 @@
+{
+	"info": {
+		"_postman_id": "2149c0e0-2362-47a6-9140-3a63b874c2c5",
+		"name": "flask-react-forum",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "Get Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "password",
+									"value": "%7B%7BAdmin%7D%7D",
+									"type": "string"
+								},
+								{
+									"key": "token",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains categories array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.categories).to.be.an('array')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categories",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains posts array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.posts).to.be.an('array')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Admin}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/posts",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts"
+							]
+						},
+						"description": "Get all posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts From Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains posts array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.posts).to.be.an('array')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Admin}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categories/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						},
+						"description": "Get all posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts From ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains comments array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.comments).to.be.an('array')",
+									"});",
+									"",
+									"pm.test(\"value contains posts array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.categories).to.be.an('array')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/posts/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						},
+						"description": "Get all posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test category\",\n    \"description\": \"Test description\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categories",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Valid New Post\",\n    \"body\": \"This is a new test Post.\",\n    \"category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/posts",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Admin}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"post_id\": 1,\n    \"body\": \"This is a Valid Comment\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/comments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"This is an updated Category description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categories/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/posts/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/posts/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "public",
+			"item": [
+				{
+					"name": "Get Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/posts",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts"
+							]
+						},
+						"description": "Get all posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts From Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categories/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						},
+						"description": "Get all posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts From ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/posts/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						},
+						"description": "Get all posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test category\",\n    \"description\": \"Test description\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categories",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Valid New Post\",\n    \"body\": \"This is a new test Post.\",\n    \"category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/posts",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Valid New Post\",\n    \"body\": \"This is a new test Post.\",\n    \"category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/comments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"This is an updated Category description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categories/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Valid New Post\",\n    \"body\": \"This is a new test Post.\",\n    \"category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/posts/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Valid New Post\",\n    \"body\": \"This is a new test Post.\",\n    \"category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/posts/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Get Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains categories array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.categories).to.be.an('array')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "eyJhbGci{{Barista}}iJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmZhZmI3YTJkNjZhNzAwNmUxNWE5NjUiLCJhdWQiOiJjb2ZmZWUtc2hvcC1mc25kLXdlaSIsImlhdCI6MTYxMTY5NzMzNywiZXhwIjoxNjExNzA0NTM3LCJhenAiOiJXcGdGU0hJampDOTRTaDNZS0s0WjNkUjZHQnFZMzNEcCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWxzIl19.OCNR1PSk2EJyvDZbjHT7EQfwwr9rn5TfLS8OwzU6MTP2SMSgiCOw_bKiV_L9S5tGiRa792XdIq09DWxXIDCS55Ze5f1dOxzmrK4xDVE2fJPhQpSOPfw8YKW8I-sdzgiqgGHXGzlfpgUb6rJoTdA_8mlicEzZn9T-OYiGf3tyAByip56x4Gdgxlv3Re9fa8HlLfARdxSnQAsID1QX1eDaSjBkbWqL3mr-Sm3eARFarrCgauZLk21oriIeqS6AocYSz20XAnIWRVM6pQv5UPm_7U32h0oh--fO7AsWNgYZ7_WUD20mBLn_QUkguGTaRQhXkaReqoR9nju9SYe1cV5G7A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categories",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains posts array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.posts).to.be.an('array')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "eyJhbGci{{Barista}}iJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmZhZmI3YTJkNjZhNzAwNmUxNWE5NjUiLCJhdWQiOiJjb2ZmZWUtc2hvcC1mc25kLXdlaSIsImlhdCI6MTYxMTY5NzMzNywiZXhwIjoxNjExNzA0NTM3LCJhenAiOiJXcGdGU0hJampDOTRTaDNZS0s0WjNkUjZHQnFZMzNEcCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWxzIl19.OCNR1PSk2EJyvDZbjHT7EQfwwr9rn5TfLS8OwzU6MTP2SMSgiCOw_bKiV_L9S5tGiRa792XdIq09DWxXIDCS55Ze5f1dOxzmrK4xDVE2fJPhQpSOPfw8YKW8I-sdzgiqgGHXGzlfpgUb6rJoTdA_8mlicEzZn9T-OYiGf3tyAByip56x4Gdgxlv3Re9fa8HlLfARdxSnQAsID1QX1eDaSjBkbWqL3mr-Sm3eARFarrCgauZLk21oriIeqS6AocYSz20XAnIWRVM6pQv5UPm_7U32h0oh--fO7AsWNgYZ7_WUD20mBLn_QUkguGTaRQhXkaReqoR9nju9SYe1cV5G7A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/posts",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts"
+							]
+						},
+						"description": "Get all posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts From Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains posts array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.posts).to.be.an('array')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categories/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						},
+						"description": "Get all posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts From ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"value contains comments array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.comments).to.be.an('array')",
+									"});",
+									"",
+									"pm.test(\"value contains posts array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.posts).to.be.an('array')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "eyJhbGci{{Barista}}iJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmZhZmI3YTJkNjZhNzAwNmUxNWE5NjUiLCJhdWQiOiJjb2ZmZWUtc2hvcC1mc25kLXdlaSIsImlhdCI6MTYxMTY5NzMzNywiZXhwIjoxNjExNzA0NTM3LCJhenAiOiJXcGdGU0hJampDOTRTaDNZS0s0WjNkUjZHQnFZMzNEcCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWxzIl19.OCNR1PSk2EJyvDZbjHT7EQfwwr9rn5TfLS8OwzU6MTP2SMSgiCOw_bKiV_L9S5tGiRa792XdIq09DWxXIDCS55Ze5f1dOxzmrK4xDVE2fJPhQpSOPfw8YKW8I-sdzgiqgGHXGzlfpgUb6rJoTdA_8mlicEzZn9T-OYiGf3tyAByip56x4Gdgxlv3Re9fa8HlLfARdxSnQAsID1QX1eDaSjBkbWqL3mr-Sm3eARFarrCgauZLk21oriIeqS6AocYSz20XAnIWRVM6pQv5UPm_7U32h0oh--fO7AsWNgYZ7_WUD20mBLn_QUkguGTaRQhXkaReqoR9nju9SYe1cV5G7A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/posts/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						},
+						"description": "Get all posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "eyJhbGci{{Barista}}iJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmZhZmI3YTJkNjZhNzAwNmUxNWE5NjUiLCJhdWQiOiJjb2ZmZWUtc2hvcC1mc25kLXdlaSIsImlhdCI6MTYxMTY5NzMzNywiZXhwIjoxNjExNzA0NTM3LCJhenAiOiJXcGdGU0hJampDOTRTaDNZS0s0WjNkUjZHQnFZMzNEcCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWxzIl19.OCNR1PSk2EJyvDZbjHT7EQfwwr9rn5TfLS8OwzU6MTP2SMSgiCOw_bKiV_L9S5tGiRa792XdIq09DWxXIDCS55Ze5f1dOxzmrK4xDVE2fJPhQpSOPfw8YKW8I-sdzgiqgGHXGzlfpgUb6rJoTdA_8mlicEzZn9T-OYiGf3tyAByip56x4Gdgxlv3Re9fa8HlLfARdxSnQAsID1QX1eDaSjBkbWqL3mr-Sm3eARFarrCgauZLk21oriIeqS6AocYSz20XAnIWRVM6pQv5UPm_7U32h0oh--fO7AsWNgYZ7_WUD20mBLn_QUkguGTaRQhXkaReqoR9nju9SYe1cV5G7A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test category\",\n    \"description\": \"Test description\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categories",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "eyJhbGci{{Barista}}iJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmZhZmI3YTJkNjZhNzAwNmUxNWE5NjUiLCJhdWQiOiJjb2ZmZWUtc2hvcC1mc25kLXdlaSIsImlhdCI6MTYxMTY5NzMzNywiZXhwIjoxNjExNzA0NTM3LCJhenAiOiJXcGdGU0hJampDOTRTaDNZS0s0WjNkUjZHQnFZMzNEcCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWxzIl19.OCNR1PSk2EJyvDZbjHT7EQfwwr9rn5TfLS8OwzU6MTP2SMSgiCOw_bKiV_L9S5tGiRa792XdIq09DWxXIDCS55Ze5f1dOxzmrK4xDVE2fJPhQpSOPfw8YKW8I-sdzgiqgGHXGzlfpgUb6rJoTdA_8mlicEzZn9T-OYiGf3tyAByip56x4Gdgxlv3Re9fa8HlLfARdxSnQAsID1QX1eDaSjBkbWqL3mr-Sm3eARFarrCgauZLk21oriIeqS6AocYSz20XAnIWRVM6pQv5UPm_7U32h0oh--fO7AsWNgYZ7_WUD20mBLn_QUkguGTaRQhXkaReqoR9nju9SYe1cV5G7A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Valid New Post\",\n    \"body\": \"This is a new test Post.\",\n    \"category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/posts",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "eyJhbGci{{Barista}}iJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmZhZmI3YTJkNjZhNzAwNmUxNWE5NjUiLCJhdWQiOiJjb2ZmZWUtc2hvcC1mc25kLXdlaSIsImlhdCI6MTYxMTY5NzMzNywiZXhwIjoxNjExNzA0NTM3LCJhenAiOiJXcGdGU0hJampDOTRTaDNZS0s0WjNkUjZHQnFZMzNEcCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWxzIl19.OCNR1PSk2EJyvDZbjHT7EQfwwr9rn5TfLS8OwzU6MTP2SMSgiCOw_bKiV_L9S5tGiRa792XdIq09DWxXIDCS55Ze5f1dOxzmrK4xDVE2fJPhQpSOPfw8YKW8I-sdzgiqgGHXGzlfpgUb6rJoTdA_8mlicEzZn9T-OYiGf3tyAByip56x4Gdgxlv3Re9fa8HlLfARdxSnQAsID1QX1eDaSjBkbWqL3mr-Sm3eARFarrCgauZLk21oriIeqS6AocYSz20XAnIWRVM6pQv5UPm_7U32h0oh--fO7AsWNgYZ7_WUD20mBLn_QUkguGTaRQhXkaReqoR9nju9SYe1cV5G7A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"post_id\": 1,\n    \"body\": \"This is a Valid Comment\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/comments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"This is an updated Category description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categories/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Valid New Post\",\n    \"body\": \"This is a new test Post.\",\n    \"category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/posts/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "eyJhbGci{{Barista}}iJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmZhZmI3YTJkNjZhNzAwNmUxNWE5NjUiLCJhdWQiOiJjb2ZmZWUtc2hvcC1mc25kLXdlaSIsImlhdCI6MTYxMTY5NzMzNywiZXhwIjoxNjExNzA0NTM3LCJhenAiOiJXcGdGU0hJampDOTRTaDNZS0s0WjNkUjZHQnFZMzNEcCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmRyaW5rcy1kZXRhaWxzIl19.OCNR1PSk2EJyvDZbjHT7EQfwwr9rn5TfLS8OwzU6MTP2SMSgiCOw_bKiV_L9S5tGiRa792XdIq09DWxXIDCS55Ze5f1dOxzmrK4xDVE2fJPhQpSOPfw8YKW8I-sdzgiqgGHXGzlfpgUb6rJoTdA_8mlicEzZn9T-OYiGf3tyAByip56x4Gdgxlv3Re9fa8HlLfARdxSnQAsID1QX1eDaSjBkbWqL3mr-Sm3eARFarrCgauZLk21oriIeqS6AocYSz20XAnIWRVM6pQv5UPm_7U32h0oh--fO7AsWNgYZ7_WUD20mBLn_QUkguGTaRQhXkaReqoR9nju9SYe1cV5G7A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Valid New Post\",\n    \"body\": \"This is a new test Post.\",\n    \"category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/posts/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "Admin",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDQxNDkyNDc5MTBhNDAwNjk5NzUyMzAiLCJhdWQiOiJmb3J1bSIsImlhdCI6MTYxNTEyNTEyNCwiZXhwIjoxNjE1MjExNTI0LCJhenAiOiJQR2VROEFEcXhpOUhIZ1p0bldpdGVHZDRQTnlvRjVJdSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmNvbW1lbnRzIiwiZGVsZXRlOnBvc3RzIiwiZ2V0OmNhdGVnb3JpZXMiLCJnZXQ6Y29tbWVudHMiLCJnZXQ6cG9zdHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicG9zdDpjYXRlZ29yaWVzIiwicG9zdDpjb21tZW50cyIsInBvc3Q6cG9zdHMiXX0.rLG0SyEFpxLp1fKIdNU9hyV7zxrpNITyjqn6_71fpZEnL915X_9ew32L2gi5vrES123kr4Hv3l3MtQOVBsDx69jHir1HImZh1chEdRyvVMdiOU50eLr2c-leGhSq04tjXlCYG9PMZIHMUprnatVbwlZgBzwrMLN73AgXuKpYGS_kFsNosFeoEqNqK-zUDPMsxSrYRsK8ivEOznz5XuERQztLE8k33Yp7DRi09TRQBJ_FItDuAwhp0FfdrgqGqkzGytTE7_Iiv4r3XgUbhxkRnuT-Pl4c0UHmGBXeIqN0qFxywsMKgt3f1b4ly884I0F5GKBgC91NnM1VpzNsI3ukCw"
+		}
+	]
+}
