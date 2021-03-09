@@ -1,0 +1,67 @@
+* Flask/React Forum Tasks
+** Data Modelling
+*** DONE Categories
+*** DONE Posts
+*** DONE Comments
+** Application
+*** api.py
+**** DONE Health endpoint
+**** DONE Create new category
+**** DONE Create new post
+**** DONE Create new comment on post
+**** DONE Update Category
+**** DONE Get all Posts
+**** DONE Get Posts from Category
+**** DONE [#A] Get Comments from Post
+**** DONE [#A] Get Post by ID
+***** DONE [#C] This maybe should bundle the comments in the return???
+**** DONE Get Categories
+**** DONE Delete Post
+**** DONE Delete Comment
+**** DONE I may need to revise some of the error messages returned as they are all returning error code 400 currently
+** Testing
+*** test_app.py
+**** DONE Health endpoint
+**** DONE Create new category
+**** DONE Create new post
+**** DONE Create new comment on post
+**** DONE Get all posts
+**** DONE [#A] Get posts from categories
+**** DONE [#A] Get comments from post
+**** DONE Get all categories
+**** DONE Update Category
+**** DONE Delete Comment
+**** DONE Delete Post
+** Third Party Authentication
+*** Auth0 Roles & Permissions
+**** Unregistered User 
+***** DONE get:posts
+***** DONE get:categories
+***** DONE get:comments
+**** Registered User
+***** DONE post:posts
+***** DONE post:comment
+**** Admin
+***** DONE post:categories
+***** DONE patch:categories
+**** RBAC (requires_auth implementation in api.py)
+*** DONE Postman Token Tests - TO BE UPDATED BEFORE SUBMISSION
+
+** Deployment
+*** TODO Procfile for Heroku
+*** TODO Heroku Deployment
+
+** Code Quality
+*** TODO PEP8 Styling
+*** TODO Comments on coding
+*** TODO Secrets stored as environment variables
+    
+** Documentation
+*** TODO Backend
+*** Frontend
+** Frontend
+*** Login page
+*** Posts
+**** Shows list of all posts
+*** Categories
+**** Shows list of categories 

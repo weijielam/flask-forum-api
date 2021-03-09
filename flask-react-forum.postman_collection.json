@@ -28,13 +28,13 @@
 							"type": "bearer",
 							"bearer": [
 								{
-									"key": "password",
-									"value": "%7B%7BAdmin%7D%7D",
+									"key": "token",
+									"value": "{{admin}}",
 									"type": "string"
 								},
 								{
-									"key": "token",
-									"value": "{{Admin}}",
+									"key": "password",
+									"value": "{{{{admin}}}}",
 									"type": "string"
 								}
 							]
