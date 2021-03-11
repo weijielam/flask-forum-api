@@ -14,7 +14,6 @@ def create_app(test_config=None):
     setup_db(app)
     # CORS(app)
 
-    # this needs to be run once to create the database
     # db_drop_and_create_all()
 
     CORS(app, resources={r"/*": {"origins": "*"}})

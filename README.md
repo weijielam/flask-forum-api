@@ -34,11 +34,32 @@ This will install all of the required packages.
 - [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use handle the lightweight sqlite database. You'll primarily work in app.py and can reference models.py. 
 
 
+
+## Database Setup
+With Postgres running, initialize the the database
+```
+dropdb forum
+createdb forum
+```
 ## Running the server
 Before running the application locally, make the following changes in the `app.py` file in the root directory
+- Uncomment the line `db_drop_and_create_all()` on the initial run to setup the required tables in the database
+
+To run the server, execute:
+
+```bash
+export DATABASE_URL=<database-connection-url>
+export FLASK_APP=app.py
+flask run --reload
+```
+
+Setting the `FLASK_APP` variable to app.py directs flask to use the `app.py` file to find the application
+
+Using the `--reload` flag will detect file changes and restart the server automatically.
+
 ### Authentication when using live deployment
-For testing the live deployment, a Postman collection with access tokens is provided for convenience
-## Testing
+For testing the live deployment, a Postman collection with access tokens is provided for convenience.
+
 ## Style Guide
 The source follows PEP8. Please use `pycodestyle` for guidance:
 ```
@@ -56,11 +77,19 @@ Errors are returned as JSON objects in the following format:
 ```
 
 The API will return the following errors based on how the request fails:
-- 400: Bad Request
-- 401
+ - 400: Bad Request
+ - 401: Unauthorized
+ - 403: Forbidden
+ - 404: Not Found
+ - 405: Method Not Allowed
+ - 422: Unprocessable Entity
+ - 500: Internal Server Error
+
 ## Endpoints
+
 ### `GET /`
 The only public endpoint, for debugging. Returns: `"Healthy"`
+
 ### `GET /categories`
 - Returns the list of categories
 - Required Headers:
@@ -81,13 +110,42 @@ The only public endpoint, for debugging. Returns: `"Healthy"`
 }
 ```
 ### `GET /categories/<int:id>`
+- Returns a category and the list of posts in the category
+- Required Headers:
+    - `Authorization` header with bearer token that has `get:categories` permission. 
+- Request arguments: Category ID, included as a parameter following a forward slash (/)
+- Returns:
+    - `200 OK` response, body with a category and list of posts.
+
+```
+{
+    "category": {
+        "description": "A place to discuss coding",
+        "id": 1,
+        "name": "Programming"
+    },
+    "posts": [
+        {
+            "created_timestamp": "Thu, 11 Mar 2021 21:56:03 GMT",
+            "id": 1,
+            "title": "Why am I bad at coding"
+        },
+        {
+            "created_timestamp": "Thu, 11 Mar 2021 21:56:05 GMT",
+            "id": 2,
+            "title": "Is copying code from Stack Overflow for my startup legal?"
+        }
+    ],
+    "success": true
+}
+```
 ### `GET /posts`
-- Returns the list of posts
+- Returns a list of posts
 - Required Headers:
     - `Authorization` header with bearer token that has `get:posts` permission.
 - Request arguments: None
 - Returns: 
-    - `200 OK` response, body with a 
+    - `200 OK` response, body with a `posts` key, its value being the list of posts
 
 ```
 {
@@ -100,14 +158,14 @@ The only public endpoint, for debugging. Returns: `"Healthy"`
         {
             "created_timestamp": "Mon, 08 Mar 2021 23:13:09 GMT",
             "id": 2,
-            "title": "Who let the dogs out?"
+            "title": "How do I get posts from this API?"
         }
     ],
     "success": true
 }
 ```
 ### `GET /posts/<int:id>
-- Returns post by id
+- Returns an existing posts and it's comments
 - Required Headers:
     - `Authorization` header with bearer token that has `get:posts` permission.
 - Request arguments: int id
@@ -116,16 +174,33 @@ The only public endpoint, for debugging. Returns: `"Healthy"`
 
 ```
 {
-    "posts": [
+    "comments": [
         {
-            "created_timestamp": "Mon, 08 Mar 2021 23:06:47 GMT",
+            "body": "Here we go",
+            "created_timestamp": "Thu, 11 Mar 2021 21:56:09 GMT",
             "id": 1,
-            "title": "Can someone review my API documentation?"
+            "post_id": 1
         },
         {
-            "created_timestamp": "Mon, 08 Mar 2021 23:13:09 GMT",
+            "body": "I don't know what's updog",
+            "created_timestamp": "Thu, 11 Mar 2021 21:56:10 GMT",
             "id": 2,
-            "title": "Who let the dogs out?"
+            "post_id": 1
+        },
+        {
+            "body": "What's updog?",
+            "created_timestamp": "Thu, 11 Mar 2021 21:56:11 GMT",
+            "id": 3,
+            "post_id": 1
+        }
+    ],
+    "post": [
+        {
+            "body": "Thoughts on the updog protocol?",
+            "category_id": 2,
+            "created_timestamp": "Thu, 11 Mar 2021 21:56:03 GMT",
+            "id": 1,
+            "title": "Valid New Post"
         }
     ],
     "success": true
@@ -136,10 +211,20 @@ The only public endpoint, for debugging. Returns: `"Healthy"`
 ### `POST /posts`
 ### `POST /commments/`
 
-### `UPDATE /categories/<int:id>`
+### `PATCH /categories/<int:id>`
+- Updates the description for a category
+- Required Headers:
+    - `Authorization` header with bearer token that has `update:categories` permission.
+- Request arguments: int id
+- Request Body: description
 
 ### `DELETE /posts/<int:id>`
+- Deletes the post
+    - Requires `delete:posts` permission
+    - Will also delete any comments made on the post
+
 ### `DELETE /comments/`
+- Deletes the comment
 
 ## Authentication and Permissions
 Authentication is handled via Auth0.
