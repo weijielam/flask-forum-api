@@ -1,4 +1,7 @@
 # Flask Forum API
+The Flask Forum API supports a basic web forum by allowing users to create posts on forum categories and comment on posts. There are two different user roles (and related permissions), which are:
+- Registered User: Can view posts + categories, create posts and comment on posts.
+- Admin: Same as above, can create categories, delete posts and comments.
 
 ## Capstone Project for Udacity's Full Stack Developer Nanodegree
 Heroku Link: https://flask-forum-app-api.herokuapp.com/
@@ -168,7 +171,7 @@ The only public endpoint, for debugging. Returns: `"Healthy"`
 - Returns an existing posts and it's comments
 - Required Headers:
     - `Authorization` header with bearer token that has `get:posts` permission.
-- Request arguments: int id
+- Request arguments: Post id
 - Returns: 
     - `200 OK` response, body with a 
 
@@ -208,26 +211,114 @@ The only public endpoint, for debugging. Returns: `"Healthy"`
 ```
 
 ### `POST /categories`
+- Adds a new category
+- Required headers:
+    `Authorization` header with bearer token that has `post:categories` permission.
+- Request body:
+    - `name`: Category name string. Must be unique.
+    - `description`: Category description string. Optional.
+- Returns:
+    - `200 OK` response when a new record was successfully created. `422 Unprocessable` response when `name` is missing or already exists.
+
+```
+{
+    "created_category_id": 3,
+    "success": true
+}
+```
 ### `POST /posts`
+- Adds a new post
+- Required headers:
+    `Authorization` header with bearer token that has `post:posts` permission.
+- Request body:
+    - `title`: Post title string. Required.
+    - `body`: Post body string. Optional.
+    - `category_id`: Post category id integer. Required.
+- Returns:
+    - `200 OK` response when a new record was successfully created. `422 Unprocessable` response when required fields are missing or not valid.
+
+```
+{
+    "created_post_id": 2,
+    "success": true
+}
+```
+
 ### `POST /commments/`
+- Adds a new comment
+- Required headers:
+    `Authorization` header with bearer token that has `post:comments` permission.
+- Request body:
+    - `post_id`: Post id integer. Required.
+    - `body`: Post body string. Required.
+- Returns:
+    - `200 OK` response when a new record was successfully created. `422 Unprocessable` response when required fields are missing or not valid.
+
+```
+{
+    "created_comment_id": 3,
+    "post_id": 1,
+    "success": true
+}
+```
 
 ### `PATCH /categories/<int:id>`
 - Updates the description for a category
 - Required Headers:
     - `Authorization` header with bearer token that has `update:categories` permission.
-- Request arguments: int id
-- Request Body: description
+- Request arguments: category id int
+- Request Body: 
+    - `description`: Category description string.
+- Returns:
+    `200 OK` response when the description was successfully updated. `422 Unprocessable` response when required fields are missing or invalid.
+
+```
+{
+    "category": {
+        "description": "Please don't post about updog",
+        "id": 1,
+        "name": "Programming"
+    },
+    "success": true
+}
+```
 
 ### `DELETE /posts/<int:id>`
-- Deletes the post
-    - Requires `delete:posts` permission
-    - Will also delete any comments made on the post
+- Deletes a post and related comments
+- Required Headers:
+    - `Authorization` header with bearer token that has `delete:posts` permission.
+- Request arguments: post id int
+- Returns:
+    `200 OK` response when the description was successfully updated. `404` when post id is invalid.
+
+```
+{
+    "delete": 3,
+    "success": true
+}
+```
+
 
 ### `DELETE /comments/`
-- Deletes the comment
+- Deletes a comment
+- Required Headers:
+    - `Authorization` header with bearer token that has `delete:comments` permission.
+- Request arguments: none
+- Request Body:
+    - `id`: Comment id int
 
+```
+{
+    "delete": 1,
+    "success": true
+}
+```
 ## Authentication and Permissions
 Authentication is handled via Auth0.
+
+All except one endpoints require authentication, and proper permission. The root is a public endpoint left there for debugging.
+
+The app currently does not offer a frontend with a login.
 
 ## Testing
 For testing the backend, run the following commands (in the exact order):
@@ -235,5 +326,6 @@ For testing the backend, run the following commands (in the exact order):
 dropdb forum_test
 createdb forum_test
 python test_app.py
+. ./setup.sh        # export USER and ADMIN token
 python test_rbac.py
 ```
