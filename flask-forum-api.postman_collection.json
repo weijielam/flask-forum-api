@@ -298,7 +298,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Test category\",\n    \"description\": \"Test description\" \n}",
+							"raw": "{\n    \"name\": \"New category\",\n    \"description\": \"Test description\" \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1479,7 +1479,11 @@
 		},
 		{
 			"key": "user",
-			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDQzOTVmMzU3MjE2MjAwNjg4NGJkMmMiLCJhdWQiOiJmb3J1bSIsImlhdCI6MTYxNTU3OTI3MCwiZXhwIjoxNjE1NjY1NjcwLCJhenAiOiJQR2VROEFEcXhpOUhIZ1p0bldpdGVHZDRQTnlvRjVJdSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmNhdGVnb3JpZXMiLCJnZXQ6Y29tbWVudHMiLCJnZXQ6cG9zdHMiLCJwb3N0OmNvbW1lbnRzIiwicG9zdDpwb3N0cyJdfQ.RuM_KDuI2GoivrCzxvFAg7x07CQWp8edP4EVHy2I2oDeglS10sIzNzqLfYMBNmTIvwopYdWA4pWitzFyHqikJtsy4uB7QgG3S2MpmvbIJ2fdWQaQb7D9sU_8GafGVvIJxRzNB8W3Wlp7v1lS-lzv2bsji1gYXiyg0NG6Gsw1jNpjpMtdvq0ezGVdDSaFNbHk11DU8zNgtzrfrGRIwzK6Mc_5T0lwcHUQ876EIYhlRXCjY1a_lXuwDIz1fYSuy1zndDuJ986zUCs7hg_J4_l8-PbNN2DDc99J4oNbfaQayKkyohLAZi-SGOWmkBYzHkQXP7LTk1TeKm6jfP_41YigAQ"
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8i..."
+		},
+		{
+			"key": "host",
+			"value": "https://flask-forum-app-api.herokuapp.com"
 		}
 	]
 }

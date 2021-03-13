@@ -4,8 +4,9 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
-from database.models import setup_db, db_drop_and_create_all, Post, Comment, Category
-
+from database.models import (
+    setup_db, db_drop_and_create_all, Post, Comment, Category
+)
 # Enabling Auth0 if it was disabled before
 # NOTE: Please run these tests in moderation
 # to not get rate-limited by Auth0 servers
@@ -18,6 +19,7 @@ ADMIN_TOKEN = os.environ["ADMIN_TOKEN"]
 USER_HEADERS = {"Authorization": "Bearer {}".format(USER_TOKEN)}
 ADMIN_HEADERS = {"Authorization": "Bearer {}".format(ADMIN_TOKEN)}
 
+
 class ForumTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -25,10 +27,11 @@ class ForumTestCase(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client
         self.database_name = "forum_test"
-        self.database_path = "postgres://{}/{}".format('localhost:5432', self.database_name)
+        self.database_path = "postgres://{}/{}" \
+            .format('localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
         # db_drop_and_create_all()
-    
+
         self.VALID_NEW_CATEGORY = {
             "name": "RBAC Test Category",
             "description": "This is a RBAC Test Category description."
@@ -77,14 +80,16 @@ class ForumTestCase(unittest.TestCase):
             self.db.drop_all()
             # create all tables
             self.db.create_all()
-        
+
     def tearDown(self):
         """Executed after reach test"""
         pass
 
     # ADMIN TESTS
     def test_admin_create_category(self):
-        response = self.client().post('/categories', json=self.VALID_NEW_CATEGORY, headers=ADMIN_HEADERS)
+        response = self.client() \
+            .post('/categories',
+                  json=self.VALID_NEW_CATEGORY, headers=ADMIN_HEADERS)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -92,14 +97,17 @@ class ForumTestCase(unittest.TestCase):
         self.assertIn('created_category_id', data)
 
     def test_admin_update_category(self):
-        response = self.client().patch('/categories/1', json=self.VALID_UPDATE_CATEGORY, headers=ADMIN_HEADERS)
+        response = self.client() \
+            .patch('/categories/1',
+                   json=self.VALID_UPDATE_CATEGORY, headers=ADMIN_HEADERS)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data["success"])
         self.assertIn('category', data)
-        self.assertEqual(data["category"]["description"], self.VALID_UPDATE_CATEGORY["description"])
-
+        self.assertEqual(
+            data["category"]["description"],
+            self.VALID_UPDATE_CATEGORY["description"])
 
     # PUBLIC TESTS
     def test_public_health(self):
@@ -121,12 +129,12 @@ class ForumTestCase(unittest.TestCase):
     def test_user_get_categories(self):
         response = self.client().get('/categories', headers=USER_HEADERS)
         data = json.loads(response.data)
-        
+
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(data))
         self.assertTrue(data["success"])
         self.assertIn('categories', data)
-        self.assertTrue(len(data["categories"])) 
+        self.assertTrue(len(data["categories"]))
 
     def test_user_get_posts(self):
         response = self.client().get('/posts', headers=USER_HEADERS)
@@ -138,11 +146,14 @@ class ForumTestCase(unittest.TestCase):
         self.assertIn('posts', data)
 
     def test_user_create_category_401(self):
-        response = self.client().post('/categories', json=self.VALID_NEW_CATEGORY, headers=USER_HEADERS)
+        response = self.client() \
+            .post('/categories',
+                  json=self.VALID_NEW_CATEGORY, headers=USER_HEADERS)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
         self.assertIn('error', data)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
