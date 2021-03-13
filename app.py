@@ -3,8 +3,10 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
-from database.models import db_drop_and_create_all, setup_db, Post, Category, Comment
+from database.models import db_drop_and_create_all, setup_db, \
+     Post, Category, Comment
 from auth.auth import AuthError, requires_auth
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -12,7 +14,6 @@ def create_app(test_config=None):
     setup_db(app)
     # CORS(app)
 
-    # this needs to be run once to create the database 
     # db_drop_and_create_all()
 
     CORS(app, resources={r"/*": {"origins": "*"}})
@@ -20,9 +21,9 @@ def create_app(test_config=None):
     @app.after_request
     def after_request(response):
         response.headers.add('Access-Control-Allow-Headers',
-                                'Content-Type, Authorization')
+                             'Content-Type, Authorization')
         response.headers.add('Access-Control-Allow-Methods',
-                                'GET, POST, PATCH, DELETE, OPTIONS')
+                             'GET, POST, PATCH, DELETE, OPTIONS')
         return response
 
     @app.route('/')
@@ -35,7 +36,7 @@ def create_app(test_config=None):
         try:
             categories_query = Category.query.order_by(Category.id).all()
             categories = [category.short() for category in categories_query]
-        except:
+        except Exception as e:
             abort(422)
 
         return jsonify({
@@ -50,11 +51,10 @@ def create_app(test_config=None):
             data = request.get_json()
             name = data['name']
             description = data['description']
-            
             category = Category(name, description)
             category.insert()
 
-        except:
+        except Exception as e:
             abort(422)
 
         return jsonify({
@@ -76,7 +76,7 @@ def create_app(test_config=None):
             category.description = description
             category.update()
 
-        except:
+        except Exception as e:
             abort(422)
 
         return jsonify({
@@ -90,7 +90,7 @@ def create_app(test_config=None):
         try:
             posts_query = Post.query.order_by(Post.id).all()
             posts = [post.short() for post in posts_query]
-        except:
+        except Exception as e:
             abort(422)
 
         return jsonify({
@@ -103,9 +103,9 @@ def create_app(test_config=None):
     def get_post_by_id(payload, id):
         try:
             post = Post.query.get(id)
-            comments_query = Comment.query.order_by(Comment.post_id==id)
+            comments_query = Comment.query.order_by(Comment.post_id == id)
             comments = [comment.long() for comment in comments_query]
-        except:
+        except Exception as e:
             abort(422)
 
         return jsonify({
@@ -120,9 +120,10 @@ def create_app(test_config=None):
         try:
             category_query = Category.query.get(id)
             category = category_query.long()
-            posts_query = Post.query.join(Category).filter(Post.category_id == id).all()
+            posts_query = Post.query.join(Category)\
+                .filter(Post.category_id == id).all()
             posts = [post.short() for post in posts_query]
-        except:
+        except Exception as e:
             abort(422)
 
         return jsonify({
@@ -144,7 +145,7 @@ def create_app(test_config=None):
             post = Post(title, body, category_id)
             post.insert()
 
-        except:
+        except Exception as e:
             abort(422)
 
         return jsonify({
@@ -160,7 +161,7 @@ def create_app(test_config=None):
             abort(404)
         try:
             post.delete()
-        except:
+        except Exception as e:
             abort(422)
         return jsonify({'success': True, 'delete': id}), 200
 
@@ -174,7 +175,7 @@ def create_app(test_config=None):
             comment = Comment(post_id, body)
             comment.insert()
 
-        except:
+        except Exception as e:
             abort(422)
 
         return jsonify({
@@ -196,11 +197,11 @@ def create_app(test_config=None):
                 abort(404)
             try:
                 comment.delete()
-            except:
+            except Exception as e:
                 abort(422)
             return jsonify({'success': True, 'delete': id}), 200
 
-        except:
+        except Exception as e:
             abort(400)
 
         return jsonify({
@@ -233,8 +234,8 @@ def create_app(test_config=None):
 
     return app
 
+
 app = create_app()
 
 if __name__ == '__main__':
     APP.run(host='0.0.0.0', port=8080, debug=True)
-

@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "2149c0e0-2362-47a6-9140-3a63b874c2c5",
-		"name": "flask-react-forum",
+		"name": "flask-forum-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1471,7 +1471,15 @@
 	"variable": [
 		{
 			"key": "Admin",
-			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDQxNDkyNDc5MTBhNDAwNjk5NzUyMzAiLCJhdWQiOiJmb3J1bSIsImlhdCI6MTYxNTEyNTEyNCwiZXhwIjoxNjE1MjExNTI0LCJhenAiOiJQR2VROEFEcXhpOUhIZ1p0bldpdGVHZDRQTnlvRjVJdSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmNvbW1lbnRzIiwiZGVsZXRlOnBvc3RzIiwiZ2V0OmNhdGVnb3JpZXMiLCJnZXQ6Y29tbWVudHMiLCJnZXQ6cG9zdHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicG9zdDpjYXRlZ29yaWVzIiwicG9zdDpjb21tZW50cyIsInBvc3Q6cG9zdHMiXX0.rLG0SyEFpxLp1fKIdNU9hyV7zxrpNITyjqn6_71fpZEnL915X_9ew32L2gi5vrES123kr4Hv3l3MtQOVBsDx69jHir1HImZh1chEdRyvVMdiOU50eLr2c-leGhSq04tjXlCYG9PMZIHMUprnatVbwlZgBzwrMLN73AgXuKpYGS_kFsNosFeoEqNqK-zUDPMsxSrYRsK8ivEOznz5XuERQztLE8k33Yp7DRi09TRQBJ_FItDuAwhp0FfdrgqGqkzGytTE7_Iiv4r3XgUbhxkRnuT-Pl4c0UHmGBXeIqN0qFxywsMKgt3f1b4ly884I0F5GKBgC91NnM1VpzNsI3ukCw"
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8i..."
+		},
+		{
+			"key": "admin",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9"
+		},
+		{
+			"key": "user",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImYtOGNEaDI1NGZlcEFvRTZGU3lhVyJ9.eyJpc3MiOiJodHRwczovL3dlaWppZWxhbS1mc25kLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDQzOTVmMzU3MjE2MjAwNjg4NGJkMmMiLCJhdWQiOiJmb3J1bSIsImlhdCI6MTYxNTU3OTI3MCwiZXhwIjoxNjE1NjY1NjcwLCJhenAiOiJQR2VROEFEcXhpOUhIZ1p0bldpdGVHZDRQTnlvRjVJdSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmNhdGVnb3JpZXMiLCJnZXQ6Y29tbWVudHMiLCJnZXQ6cG9zdHMiLCJwb3N0OmNvbW1lbnRzIiwicG9zdDpwb3N0cyJdfQ.RuM_KDuI2GoivrCzxvFAg7x07CQWp8edP4EVHy2I2oDeglS10sIzNzqLfYMBNmTIvwopYdWA4pWitzFyHqikJtsy4uB7QgG3S2MpmvbIJ2fdWQaQb7D9sU_8GafGVvIJxRzNB8W3Wlp7v1lS-lzv2bsji1gYXiyg0NG6Gsw1jNpjpMtdvq0ezGVdDSaFNbHk11DU8zNgtzrfrGRIwzK6Mc_5T0lwcHUQ876EIYhlRXCjY1a_lXuwDIz1fYSuy1zndDuJ986zUCs7hg_J4_l8-PbNN2DDc99J4oNbfaQayKkyohLAZi-SGOWmkBYzHkQXP7LTk1TeKm6jfP_41YigAQ"
 		}
 	]
 }
