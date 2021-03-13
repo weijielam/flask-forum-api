@@ -15,6 +15,7 @@ if not database_path:
 
 db = SQLAlchemy()
 
+
 def setup_db(app, database_path=database_path):
     """binds a flask application and a SQLAlchemy service"""
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
@@ -23,6 +24,7 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     db.create_all()
 
+
 def db_drop_and_create_all():
     """
     drops the database tables and starts fresh
@@ -30,6 +32,7 @@ def db_drop_and_create_all():
     """
     db.drop_all()
     db.create_all()
+
 
 class Category(db.Model):
     __tablename__ = "categories"
@@ -58,7 +61,7 @@ class Category(db.Model):
             "id": self.id,
             "name": self.name,
         }
-    
+
     def long(self):
         return {
             "id": self.id,
@@ -68,6 +71,7 @@ class Category(db.Model):
 
     def __repr__(self):
         return "<Category {} {}>".format(self.name, self.description)
+
 
 class Post(db.Model):
     __tablename__ = "posts"
@@ -94,7 +98,7 @@ class Post(db.Model):
 
     def update(self):
         db.session.commit()
-    
+
     def short(self):
         return {
             "id": self.id,
@@ -112,8 +116,11 @@ class Post(db.Model):
         }
 
     def __repr__(self):
-        return "<Post {} {} {} {} {}>".format(self.id, self.title, self.body, self.created_timestamp, self.category_id)
-        
+        return "<Post {} {} {} {} {}>".format(
+            self.id, self.title, self.body,
+            self.created_timestamp, self.category_id)
+
+
 class Comment(db.Model):
     __tablename__ = "comments"
 
@@ -122,7 +129,9 @@ class Comment(db.Model):
     created_timestamp = Column(DateTime, default=datetime.now())
     post_id = Column(Integer, ForeignKey(Post.id), nullable=False)
 
-    post = db.relationship(Post, backref=db.backref("posts", cascade="save-update, merge, delete"))
+    post = db.relationship(
+        Post, backref=db.backref
+        ("posts", cascade="save-update, merge, delete"))
 
     def __init__(self, post_id, body):
         self.post_id = post_id
@@ -139,7 +148,7 @@ class Comment(db.Model):
 
     def update(self):
         db.session.commit()
-    
+
     def short(self):
         return {
             "id": self.id,
@@ -156,5 +165,5 @@ class Comment(db.Model):
         }
 
     def __repr__(self):
-        return "<Comment {} {} {}>".format(self.post_id, self.body, self.created_timestamp)
-
+        return "<Comment {} {} {}>".format(
+            self.post_id, self.body, self.created_timestamp)
