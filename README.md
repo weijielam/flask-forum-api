@@ -8,6 +8,21 @@ Heroku Link: https://flask-forum-app-api.herokuapp.com/
 
 While running locally: http://localhost:5000
 
+## Motivation
+This is my capstone project submission for the Udacity Full-Stack Developer Nanodegree program.
+
+The goal is to demonstrate the ability to:
+
+- Design data models and their relations using SQLAlchemy.
+- Write database queries using SQLAlchemy.
+- Design an HTTP API with Flask.
+- Document the API and development guide in detail.
+- Implement authentication and Role Based Access Control using Auth0.
+- Test the API and access control capabilities.
+- Provide PEP8 compliant, and readable code.
+- Deploy the app to Heroku.
+
+
 ## Getting Started
 
 ### Installing Dependencies
@@ -36,7 +51,17 @@ This will install all of the required packages.
 
 - [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use handle the lightweight sqlite database. You'll primarily work in app.py and can reference models.py. 
 
+- PostgreSQL, also known as Postgres, is a free and open-source relational database management system
 
+- [Flask Migrate](https://flask-migrate.readthedocs.io/en/latest/) is used to manage any changes made to the models and handle database migrations
+
+- [Flask CORS](https://flask-cors.readthedocs.io/en/latest/) a Flask extension for handling Cross Origin Resource Sharing (CORS), making cross-origin AJAX possible.
+
+- [Auth0](auth0.com/) is used to provide RBAC functionality by providing JWT tokens for permissions
+
+- [Python Unittest](https://docs.python.org/3/library/unittest.html) is used to test the application functionality and RBAC permissions
+
+- Postman - Used to test live deployment endpoints of the application
 
 ## Database Setup
 With Postgres running, initialize the the database
