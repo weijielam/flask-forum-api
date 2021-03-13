@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
 from database.models import db_drop_and_create_all, setup_db, \
-     Post, Category, Comment
+    Post, Category, Comment
 from auth.auth import AuthError, requires_auth
 
 

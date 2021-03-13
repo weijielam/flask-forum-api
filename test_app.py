@@ -86,6 +86,7 @@ class ForumTestCase(unittest.TestCase):
     allows them to be ran in a specific order. At a later point
     I may change the tests to work independently of each other.
     """
+
     def test_a_01_health(self):
         response = self.client().get('/')
         data = json.loads(response.data)
