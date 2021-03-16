@@ -57,7 +57,7 @@ This will install all of the required packages.
 
 - [Flask CORS](https://flask-cors.readthedocs.io/en/latest/) a Flask extension for handling Cross Origin Resource Sharing (CORS), making cross-origin AJAX possible.
 
-- [Auth0](auth0.com/) is used to provide RBAC functionality by providing JWT tokens for permissions
+- [Auth0](https://auth0.com/) is used to provide RBAC functionality by providing JWT tokens for permissions
 
 - [Python Unittest](https://docs.python.org/3/library/unittest.html) is used to test the application functionality and RBAC permissions
 
